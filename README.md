@@ -1,7 +1,8 @@
 # Goal Engineering
 
 <p align="center">
-  <img src="assets/visuals/goal-engineering-header.png" alt="Goal Engineering — Run until verifiably done" width="100%" />
+  <img src="assets/visuals/goal-engineering-header.jpg" alt="Goal Engineering — Run until verifiably done" width="100%" />
+  
 </p>
 
 <p align="center">
