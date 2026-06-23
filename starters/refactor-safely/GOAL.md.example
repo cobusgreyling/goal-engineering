@@ -1,0 +1,27 @@
+# GOAL.md
+
+## Status
+ACTIVE
+
+## Active Objective
+
+Refactor [module] without behavior change — [e.g. extract service layer].
+
+## Done Condition
+
+- [ ] Full test suite exits 0 (same tests as before refactor)
+- [ ] No public API breakage (exports/signatures unchanged unless listed)
+- [ ] goal-verifier PASS
+
+## Refactor Scope
+
+- In scope: [files/modules]
+- Out of scope: behavior changes, new features
+
+## Deny List
+
+- Changing test expectations to match broken behavior
+
+## Progress Log
+
+## Blockers

@@ -19,15 +19,58 @@ type Pattern =
   | 'coverage-target';
 
 type Tool = 'grok' | 'claude' | 'codex';
+type Lang = 'node' | 'python' | 'go';
 
 const PATTERN_STARTERS: Record<Pattern, string> = {
   'minimal-goal': 'minimal-goal',
   'tests-green': 'tests-green',
   'fix-bug': 'fix-bug',
-  'migrate-module': 'minimal-goal',
-  'implement-feature': 'minimal-goal',
-  'refactor-safely': 'minimal-goal',
-  'coverage-target': 'minimal-goal',
+  'migrate-module': 'migrate-module',
+  'implement-feature': 'implement-feature',
+  'refactor-safely': 'refactor-safely',
+  'coverage-target': 'coverage-target',
+};
+
+const AGENTS_BY_LANG: Record<Lang, string> = {
+  node: `# AGENTS.md
+
+## Test commands
+npm test
+
+## Coverage (coverage-target pattern)
+npm test -- --coverage
+
+## Goal discipline
+- Mirror active /goal in GOAL.md
+- goal-verifier before update_goal(completed: true)
+- One active goal per session
+`,
+  python: `# AGENTS.md
+
+## Test commands
+pytest
+
+## Coverage (coverage-target pattern)
+pytest --cov=src --cov-report=term-missing
+
+## Goal discipline
+- Mirror active /goal in GOAL.md
+- goal-verifier before update_goal(completed: true)
+- One active goal per session
+`,
+  go: `# AGENTS.md
+
+## Test commands
+go test ./...
+
+## Coverage (coverage-target pattern)
+go test ./... -coverprofile=coverage.out && go tool cover -func=coverage.out
+
+## Goal discipline
+- Mirror active /goal in GOAL.md
+- goal-verifier before update_goal(completed: true)
+- One active goal per session
+`,
 };
 
 const GOAL_COMMANDS: Record<Pattern, string> = {
@@ -67,9 +110,18 @@ const BUDGET_TURNS: Record<Pattern, number> = {
   'coverage-target': 35,
 };
 
+async function detectLang(targetDir: string): Promise<Lang> {
+  if (await exists(path.join(targetDir, 'pyproject.toml')) || await exists(path.join(targetDir, 'pytest.ini'))) {
+    return 'python';
+  }
+  if (await exists(path.join(targetDir, 'go.mod'))) return 'go';
+  return 'node';
+}
+
 function parseArgs(argv: string[]) {
   let pattern: Pattern = 'minimal-goal';
   let tool: Tool = 'grok';
+  let lang: Lang | 'auto' = 'auto';
   let target = '.';
   let dryRun = false;
 
@@ -77,12 +129,13 @@ function parseArgs(argv: string[]) {
     const a = argv[i];
     if (a === '--pattern' || a === '-p') pattern = argv[++i] as Pattern;
     else if (a === '--tool' || a === '-t') tool = argv[++i] as Tool;
+    else if (a === '--lang' || a === '-l') lang = argv[++i] as Lang | 'auto';
     else if (a === '--dry-run') dryRun = true;
-    else if (a === '--help' || a === '-h') return { help: true as const, pattern, tool, target, dryRun };
+    else if (a === '--help' || a === '-h') return { help: true as const, pattern, tool, lang, target, dryRun };
     else if (!a.startsWith('-')) target = a;
   }
 
-  return { help: false as const, pattern, tool, target, dryRun };
+  return { help: false as const, pattern, tool, lang, target, dryRun };
 }
 
 async function exists(p: string): Promise<boolean> {
@@ -258,18 +311,21 @@ Patterns:
 Options:
   -p, --pattern   Pattern to scaffold
   -t, --tool      Tool target (default: grok)
+  -l, --lang      node | python | go | auto (default: auto-detect)
   --dry-run       Print actions without copying
   -h, --help      This help
 
 Examples:
   npx @cobusgreyling/goal-init . --pattern tests-green --tool grok
-  npx @cobusgreyling/goal-init . -p fix-bug -t claude
+  npx @cobusgreyling/goal-init . -p fix-bug -t claude --lang python
+  npx @cobusgreyling/goal-init . -p migrate-module -l go
 `);
     process.exit(0);
   }
 
-  const { pattern, tool, target, dryRun } = args;
+  const { pattern, tool, lang: langArg, target, dryRun } = args;
   const targetDir = path.resolve(target);
+  const lang: Lang = langArg === 'auto' ? await detectLang(targetDir) : langArg;
   const starterName = PATTERN_STARTERS[pattern];
   const startersRoot = await resolveBundledOrMonorepo('starters');
   const templatesRoot = await resolveBundledOrMonorepo('templates');
@@ -280,7 +336,7 @@ Examples:
     process.exit(1);
   }
 
-  console.log(`\ngoal-init: ${pattern} → ${targetDir} (${tool})${dryRun ? ' [dry-run]' : ''}\n`);
+  console.log(`\ngoal-init: ${pattern} → ${targetDir} (${tool}, ${lang})${dryRun ? ' [dry-run]' : ''}\n`);
 
   await copyGoalSkills(targetDir, tool, starterRoot, dryRun);
   await scaffoldFiles(pattern, targetDir, templatesRoot, dryRun);
@@ -294,18 +350,8 @@ Examples:
   }
 
   if (!dryRun && !(await exists(path.join(targetDir, 'AGENTS.md')))) {
-    const agentsTemplate = `# AGENTS.md
-
-## Test commands
-npm test
-
-## Goal discipline
-- Mirror active /goal in GOAL.md
-- goal-verifier before update_goal(completed: true)
-- One active goal per session
-`;
-    await writeFile(path.join(targetDir, 'AGENTS.md'), agentsTemplate);
-    console.log('  created: AGENTS.md (template)');
+    await writeFile(path.join(targetDir, 'AGENTS.md'), AGENTS_BY_LANG[lang]);
+    console.log(`  created: AGENTS.md (${lang} template)`);
   }
 
   console.log('\n=== Next steps ===');

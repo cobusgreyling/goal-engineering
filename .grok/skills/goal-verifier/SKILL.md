@@ -31,6 +31,20 @@ Gaps (if REJECT):
 - [what remains]
 ```
 
+## Pattern-specific checks
+
+If the active goal matches a [pattern](https://github.com/cobusgreyling/goal-engineering/tree/main/patterns), apply extra gates:
+
+| Pattern | Extra verifier step |
+|---------|---------------------|
+| migrate-module | `rg '<legacy-path>' src/ tests/` must be empty |
+| coverage-target | Parse coverage report; reject hollow tests |
+| fix-bug | Repro steps fail; regression test file exists |
+| refactor-safely | Full suite green; no weakened test assertions |
+| implement-feature | Each acceptance criterion has evidence; no scope creep |
+
+Starters ship tailored verifier skills under `starters/<pattern>/.grok/skills/goal-verifier/`.
+
 ## Rules
 
 - Do not implement fixes — only verify.

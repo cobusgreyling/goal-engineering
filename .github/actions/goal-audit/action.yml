@@ -1,0 +1,75 @@
+name: Goal Audit
+description: Run goal-audit and optionally gate on minimum G readiness level
+branding:
+  icon: target
+  color: orange
+
+inputs:
+  path:
+    description: Project path to audit
+    required: false
+    default: '.'
+  min-level:
+    description: Minimum readiness level (G0, G1, G2, G3)
+    required: false
+    default: G1
+  suggest:
+    description: Print scaffold suggestions on failure
+    required: false
+    default: 'false'
+  comment-on-pr:
+    description: Post Markdown audit report as PR comment (requires pull_request event)
+    required: false
+    default: 'true'
+
+outputs:
+  score:
+    description: Goal readiness score 0-100
+    value: ${{ steps.audit.outputs.score }}
+  level:
+    description: G0-G3 readiness level
+    value: ${{ steps.audit.outputs.level }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Run goal-audit
+      id: audit
+      shell: bash
+      run: |
+        set -euo pipefail
+        ARGS="${{ inputs.path }} --json --min-level ${{ inputs.min-level }}"
+        if [ "${{ inputs.suggest }}" = "true" ]; then ARGS="$ARGS --suggest"; fi
+        OUT=$(mktemp)
+        set +e
+        npx --yes @cobusgreyling/goal-audit@latest $ARGS > "$OUT"
+        CODE=$?
+        set -e
+        cat "$OUT"
+        SCORE=$(node -e "const j=JSON.parse(require('fs').readFileSync('$OUT','utf8')); console.log(j.score)")
+        LEVEL=$(node -e "const j=JSON.parse(require('fs').readFileSync('$OUT','utf8')); console.log(j.level)")
+        echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+        echo "level=$LEVEL" >> "$GITHUB_OUTPUT"
+        exit $CODE
+
+    - name: Comment PR with audit report
+      if: inputs.comment-on-pr == 'true' && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const { execSync } = require('child_process');
+          const path = '${{ inputs.path }}';
+          const md = execSync(`npx --yes @cobusgreyling/goal-audit@latest ${path} --md`, { encoding: 'utf8' });
+          const body = `## Goal Readiness Audit\n\n${md}\n\n*Powered by [goal-engineering](https://github.com/cobusgreyling/goal-engineering)*`;
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body,
+          });

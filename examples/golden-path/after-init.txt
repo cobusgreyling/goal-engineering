@@ -1,0 +1,13 @@
+Goal Readiness Score: 65/100  (G2 — verified goals with checker split)
+Target: examples/golden-path/sample-app
+
+✓ GOAL file present (GOAL.md)
+✓ Goal skills: goal-completion-check, goal-scoper, goal-verifier
+✓ Verifier skill or agent present
+✓ AGENTS.md mentions goal discipline
+✓ Goal budget documented
+✓ Test harness detected
+
+Recommendations:
+  • Add CI workflows for G3
+  • Log goal runs in goal-run-log.md

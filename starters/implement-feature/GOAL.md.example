@@ -1,0 +1,29 @@
+# GOAL.md
+
+## Status
+ACTIVE
+
+## Active Objective
+
+Implement [feature name] per acceptance criteria below.
+
+## Done Condition
+
+- [ ] All acceptance criteria met (see below)
+- [ ] Tests cover new behavior
+- [ ] No scope creep beyond this feature
+- [ ] goal-verifier PASS
+
+## Acceptance Criteria
+
+- [ ] User can [action]
+- [ ] Error case [X] handled
+- [ ] API/docs updated if public surface changed
+
+## Deny List
+
+- Unrelated refactors, drive-by cleanup
+
+## Progress Log
+
+## Blockers

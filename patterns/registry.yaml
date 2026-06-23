@@ -16,7 +16,7 @@ patterns:
     file: migrate-module.md
     maturity: G2
     verifier: tests + import scan
-    starter: starters/minimal-goal
+    starter: starters/migrate-module
     cost:
       typical_turns: 25
       tokens_per_turn: 90000
@@ -27,7 +27,7 @@ patterns:
     file: implement-feature.md
     maturity: G1
     verifier: acceptance checklist
-    starter: starters/minimal-goal
+    starter: starters/implement-feature
     cost:
       typical_turns: 18
       tokens_per_turn: 85000
@@ -49,7 +49,7 @@ patterns:
     file: refactor-safely.md
     maturity: G2
     verifier: test lock
-    starter: starters/minimal-goal
+    starter: starters/refactor-safely
     cost:
       typical_turns: 15
       tokens_per_turn: 75000
@@ -60,7 +60,7 @@ patterns:
     file: coverage-target.md
     maturity: G2
     verifier: coverage report
-    starter: starters/minimal-goal
+    starter: starters/coverage-target
     cost:
       typical_turns: 22
       tokens_per_turn: 80000

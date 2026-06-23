@@ -1,0 +1,30 @@
+# GOAL.md
+
+## Status
+ACTIVE
+
+## Active Objective
+
+Migrate `legacy/auth` to `lib/auth/v2` per migration plan below.
+
+## Done Condition
+
+- [ ] New module wired; consumers switched
+- [ ] Module-specific tests pass
+- [ ] `rg 'legacy/auth' src/ tests/` returns no matches
+- [ ] goal-verifier PASS
+
+## Migration Plan
+
+1. Add new implementation alongside old (strangler)
+2. Switch consumers
+3. Delete legacy paths
+4. Verifier pass
+
+## Deny List
+
+- Production credentials, `.env`
+
+## Progress Log
+
+## Blockers

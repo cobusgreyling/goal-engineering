@@ -5,6 +5,7 @@
 | `@cobusgreyling/goal-audit` | `tools/goal-audit` | `goal-audit-v*` |
 | `@cobusgreyling/goal-init` | `tools/goal-init` | `goal-init-v*` |
 | `@cobusgreyling/goal-cost` | `tools/goal-cost` | `goal-cost-v*` |
+| `@cobusgreyling/goal` | `tools/goal` | `goal-v*` |
 
 **Source of truth:** this repo (`goal-engineering`). Publish by tagging from `main`.
 
@@ -18,14 +19,10 @@
 
 ```bash
 # bump version in tools/<pkg>/package.json, commit, then:
-git tag goal-audit-v1.1.0
-git push origin goal-audit-v1.1.0
-
-git tag goal-init-v1.0.0
-git push origin goal-init-v1.0.0
-
-git tag goal-cost-v1.0.0
-git push origin goal-cost-v1.0.0
+git tag goal-audit-v1.2.0 && git push origin goal-audit-v1.2.0
+git tag goal-init-v1.1.0 && git push origin goal-init-v1.1.0
+git tag goal-cost-v1.0.0 && git push origin goal-cost-v1.0.0
+git tag goal-v1.0.0 && git push origin goal-v1.0.0
 ```
 
 ## Verify

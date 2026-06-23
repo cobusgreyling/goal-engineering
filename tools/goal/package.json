@@ -1,0 +1,51 @@
+{
+  "name": "@cobusgreyling/goal",
+  "version": "1.0.0",
+  "description": "Unified CLI for goal engineering: doctor (audit), init (scaffold), estimate (cost). npx @cobusgreyling/goal doctor .",
+  "type": "module",
+  "bin": {
+    "goal": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "pretest": "npm install --no-save file:../goal-audit file:../goal-init file:../goal-cost",
+    "test": "npm run build && node --test test/cli.test.mjs",
+    "prepublishOnly": "npm test",
+    "start": "node dist/cli.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@cobusgreyling/goal-audit": "1.2.0",
+    "@cobusgreyling/goal-cost": "1.0.0",
+    "@cobusgreyling/goal-init": "1.1.0"
+  },
+  "keywords": [
+    "goal-engineering",
+    "grok-build",
+    "ai-agents"
+  ],
+  "author": "Cobus Greyling",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cobusgreyling/goal-engineering.git",
+    "directory": "tools/goal"
+  },
+  "homepage": "https://github.com/cobusgreyling/goal-engineering",
+  "bugs": {
+    "url": "https://github.com/cobusgreyling/goal-engineering/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "typescript": "^5.0.0"
+  }
+}

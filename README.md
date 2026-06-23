@@ -15,6 +15,9 @@
   <a href="https://github.com/cobusgreyling/goal-engineering/stargazers"><img src="https://img.shields.io/github/stars/cobusgreyling/goal-engineering?style=social" alt="GitHub stars"></a>
   <a href="https://github.com/cobusgreyling/goal-engineering/actions/workflows/audit.yml"><img src="https://img.shields.io/github/actions/workflow/status/cobusgreyling/goal-engineering/audit.yml?label=goal-audit%20dogfood" alt="goal-audit dogfood"></a>
   <a href="https://www.npmjs.com/package/@cobusgreyling/goal-audit"><img src="https://img.shields.io/npm/v/@cobusgreyling/goal-audit?label=goal-audit" alt="goal-audit npm"></a>
+  <a href="https://www.npmjs.com/package/@cobusgreyling/goal-init"><img src="https://img.shields.io/npm/v/@cobusgreyling/goal-init?label=goal-init" alt="goal-init npm"></a>
+  <a href="https://www.npmjs.com/package/@cobusgreyling/goal-cost"><img src="https://img.shields.io/npm/v/@cobusgreyling/goal-cost?label=goal-cost" alt="goal-cost npm"></a>
+  <a href="https://www.npmjs.com/package/@cobusgreyling/goal"><img src="https://img.shields.io/npm/v/@cobusgreyling/goal?label=goal" alt="goal meta CLI npm"></a>
   <a href="https://github.com/cobusgreyling/goal-engineering/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT"></a>
   <a href="https://cobusgreyling.github.io/goal-engineering/"><img src="https://img.shields.io/badge/GitHub_Pages-live%20%7C%20interactive-f59e0b" alt="Pages"></a>
 </p>
@@ -25,6 +28,9 @@ This is the **canonical public reference** for [Grok Build CLI](https://x.ai)'s 
 
 <p align="center">
   <strong><a href="https://cobusgreyling.github.io/goal-engineering/">→ Interactive showcase + pattern picker</a></strong>
+  <br>
+  <strong><a href="docs/canonical-essay.md">→ Canonical essay</a></strong> ·
+  <strong><a href="examples/golden-path/SESSION.md">→ Golden path (10 min replay)</a></strong>
   <br>
   <strong><a href="https://github.com/cobusgreyling/loop-engineering">→ Companion: Loop Engineering</a></strong> (scheduled cadence) ·
   <strong><a href="https://github.com/cobusgreyling/fleet-engineering">Fleet Engineering</a></strong> (governed populations)
@@ -43,15 +49,19 @@ Goal    = run until done (or blocked / paused)
 ## Quick Start (2 minutes)
 
 ```bash
-# 1. Clone this reference
-git clone https://github.com/cobusgreyling/goal-engineering.git
-cd goal-engineering
+# Unified CLI (recommended)
+npx @cobusgreyling/goal doctor . --suggest
+npx @cobusgreyling/goal init . --pattern tests-green --tool grok
 
-# 2. Audit your project for goal readiness
+# Or individual packages
 npx @cobusgreyling/goal-audit . --suggest
+npx @cobusgreyling/goal-init . --pattern tests-green --tool grok --lang python
+```
 
-# 3. In Grok Build CLI, set a goal
-/goal All tests pass and auth module uses the new API
+In Grok Build:
+
+```
+/goal All tests pass — goal-verifier before completed: true
 ```
 
 Manage the active goal:
@@ -63,6 +73,8 @@ Manage the active goal:
 /goal clear     # end goal mode
 ```
 
+**Replay a full session:** [examples/golden-path/SESSION.md](examples/golden-path/SESSION.md)
+
 ## Contents
 
 - [Why Goals Matter](#why-goals-matter)
@@ -73,6 +85,7 @@ Manage the active goal:
 - [Goal vs Loop](#goal-vs-loop)
 - [Operating & Safety](#operating--safety)
 - [Tools](#tools)
+- [CI Integration](#ci-integration)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -85,7 +98,7 @@ Most agent work fails in the gap between "looks done" and **actually done**. Goa
 3. **Explicit lifecycle** — pause, resume, clear, blocked
 4. **Verifiable completion** — you define the stop condition up front
 
-Goals pair naturally with [loop engineering](https://github.com/cobusgreyling/loop-engineering): loops discover work; goals **finish** it.
+Goals pair naturally with [loop engineering](https://github.com/cobusgreyling/loop-engineering): loops discover work; goals **finish** it. See [docs/stack-cookbook.md](docs/stack-cookbook.md).
 
 ## Grok Build API
 
@@ -99,7 +112,7 @@ Goals pair naturally with [loop engineering](https://github.com/cobusgreyling/lo
 
 Full reference: [docs/api-reference.md](docs/api-reference.md)
 
-**Availability:** `/goal` appears when the goal feature is enabled and `update_goal` is in the session toolset.
+**Availability:** `/goal` appears when the goal feature is enabled and `update_goal` is in the session toolset. No slash command? See [examples/no-slash-command/GOAL-only.md](examples/no-slash-command/GOAL-only.md).
 
 ## The Four Primitives
 
@@ -129,30 +142,23 @@ flowchart LR
 
 ## Patterns
 
-| Pattern | When to use |
-|---------|-------------|
-| [Tests Green](patterns/tests-green.md) | CI red → green with verifier gates |
-| [Migrate Module](patterns/migrate-module.md) | API/module migration with compatibility checks |
-| [Implement Feature](patterns/implement-feature.md) | Scoped feature with acceptance criteria |
-| [Fix Bug](patterns/fix-bug.md) | Repro → fix → regression test |
-| [Refactor Safely](patterns/refactor-safely.md) | Behavior-preserving refactor with test lock |
-| [Coverage Target](patterns/coverage-target.md) | Raise coverage to a threshold |
+| Pattern | Starter | When to use |
+|---------|---------|-------------|
+| [Tests Green](patterns/tests-green.md) | `starters/tests-green` | CI red → green with verifier gates |
+| [Migrate Module](patterns/migrate-module.md) | `starters/migrate-module` | API/module migration + import scan |
+| [Implement Feature](patterns/implement-feature.md) | `starters/implement-feature` | Scoped feature + acceptance criteria |
+| [Fix Bug](patterns/fix-bug.md) | `starters/fix-bug` | Repro → fix → regression test |
+| [Refactor Safely](patterns/refactor-safely.md) | `starters/refactor-safely` | Behavior-preserving refactor |
+| [Coverage Target](patterns/coverage-target.md) | `starters/coverage-target` | Raise coverage to threshold |
 
-Unsure? [Pattern Picker](docs/pattern-picker.md) · Full catalog: [patterns/README.md](patterns/README.md)
+Unsure? [Pattern Picker](docs/pattern-picker.md) · When **not** to use goals: [docs/when-not-to-use-goals.md](docs/when-not-to-use-goals.md)
 
 ## Getting Started (5 minutes)
 
 ```bash
-# Scaffold a pattern-ready project (recommended)
-npx @cobusgreyling/goal-init . --pattern tests-green --tool grok
-
-# Estimate turn/token spend
-npx @cobusgreyling/goal-cost --pattern tests-green --level G2
-
-# Audit readiness
-npx @cobusgreyling/goal-audit . --suggest
-
-# See scores climb
+npx @cobusgreyling/goal init . --pattern tests-green --tool grok
+npx @cobusgreyling/goal estimate --pattern tests-green --level G2
+npx @cobusgreyling/goal doctor . --suggest
 bash scripts/before-after-demo.sh
 ```
 
@@ -181,6 +187,7 @@ When to combine: a daily loop triages; when it finds a fixable item, **hand off 
 
 - [Operating Goals](docs/operating-goals.md) — day-to-day playbook
 - [Anti-Patterns](docs/anti-patterns.md) — design mistakes before production
+- [FAQ & Troubleshooting](docs/faq.md)
 - [Multi-Goal Coordination](docs/multi-goal.md) — parallel goals and loop handoff
 - [Safety](docs/safety.md) — deny lists, human gates, kill switches
 - [Failure Modes](docs/failure-modes.md) — what goes wrong and how to recover
@@ -191,11 +198,31 @@ When to combine: a daily loop triages; when it finds a fixable item, **hand off 
 
 | Tool | Command |
 |------|---------|
-| [goal-audit](tools/goal-audit/) | `npx @cobusgreyling/goal-audit . --suggest` |
-| [goal-init](tools/goal-init/) | `npx @cobusgreyling/goal-init . --pattern tests-green --tool grok` |
+| **goal** (meta) | `npx @cobusgreyling/goal doctor . --suggest` |
+| [goal-audit](tools/goal-audit/) | `npx @cobusgreyling/goal-audit . --json --min-level G2` |
+| [goal-init](tools/goal-init/) | `npx @cobusgreyling/goal-init . --pattern tests-green --lang python` |
 | [goal-cost](tools/goal-cost/) | `npx @cobusgreyling/goal-cost --pattern fix-bug` |
 
-Scores **Goal Readiness (G0–G3)** from signals: `GOAL.md`, `.grok/skills/`, verifier, test harness, done-condition checkboxes, `goal-run-log.md`.
+| Meta subcommand | Maps to |
+|-----------------|---------|
+| `doctor` / `audit` | goal-audit |
+| `init` / `scaffold` | goal-init |
+| `estimate` / `cost` | goal-cost |
+
+Scores **Goal Readiness (G0–G3)** from signals: `GOAL.md`, skills, verifier, tests, CI, budget, run log freshness.
+
+## CI Integration
+
+Gate PRs on minimum readiness:
+
+```yaml
+- uses: cobusgreyling/goal-engineering/.github/actions/goal-audit@main
+  with:
+    path: .
+    min-level: G2
+```
+
+Or: `npx @cobusgreyling/goal-audit . --json --min-level G2` (exit 2 if below threshold).
 
 ## The Stack
 
@@ -209,7 +236,7 @@ Scores **Goal Readiness (G0–G3)** from signals: `GOAL.md`, `.grok/skills/`, ve
 
 ## Contributing
 
-PRs that improve patterns, verifier skills, or CLI heuristics are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), [adopters](docs/adopters.md), and [stories/](stories/).
+PRs that improve patterns, verifier skills, or CLI heuristics are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), [adopters](docs/adopters.md), [discussions](docs/discussions.md), and [stories/](stories/).
 
 ## License
 

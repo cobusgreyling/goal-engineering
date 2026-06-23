@@ -1,0 +1,15 @@
+- name: Pattern requests
+  description: Propose new goal patterns or improvements to existing ones
+  emoji: '🎯'
+- name: Story submissions
+  description: Share real goal wins or honest failures (see stories/)
+  emoji: '📖'
+- name: Tooling & audit scores
+  description: goal-audit, goal-init, goal-cost, CI gates, G0–G3 scoring debates
+  emoji: '🔧'
+- name: Goal-ready reviews
+  description: Ask the community if your GOAL.md / verifier setup is production-ready
+  emoji: '✅'
+- name: General
+  description: Questions, ideas, and showcase links
+  emoji: '💬'

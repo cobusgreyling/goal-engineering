@@ -1,0 +1,39 @@
+name: Release goal (meta CLI)
+
+on:
+  push:
+    tags:
+      - 'goal-v*'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install sibling packages for test
+        run: |
+          npm ci --prefix tools/goal-audit
+          npm ci --prefix tools/goal-init
+          npm ci --prefix tools/goal-cost
+          npm run build --prefix tools/goal-audit
+          npm run build --prefix tools/goal-init
+          npm run build --prefix tools/goal-cost
+      - name: Install, build, test meta CLI
+        working-directory: tools/goal
+        run: |
+          npm install ../goal-audit ../goal-init ../goal-cost
+          npm run build
+          npm test
+      - name: Publish to npm
+        working-directory: tools/goal
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

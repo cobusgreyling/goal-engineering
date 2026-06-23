@@ -1,0 +1,11 @@
+Goal Readiness Score: 15/100  (G0 — ad hoc — scaffold GOAL.md and skills)
+Target: examples/golden-path/sample-app
+
+✗ No GOAL.md — goals will not survive compaction
+△ No goal-verifier / goal-scoper skills found
+△ No AGENTS.md
+✓ Test harness detected
+
+Recommendations:
+  • npx @cobusgreyling/goal-init . --pattern tests-green --tool grok
+  • Read docs/goal-design-checklist.md and starters/minimal-goal/

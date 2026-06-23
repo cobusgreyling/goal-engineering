@@ -17,7 +17,7 @@ Thanks for helping make this the go-to reference for Grok Build `/goal`.
 3. Open PR with clear description
 4. Link related issues or blog posts if any
 
-Discuss ideas in [GitHub Discussions](https://github.com/cobusgreyling/goal-engineering/discussions).
+Discuss ideas in [GitHub Discussions](https://github.com/cobusgreyling/goal-engineering/discussions) — see [docs/discussions.md](docs/discussions.md) for categories.
 
 ## License
 

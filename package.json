@@ -3,9 +3,9 @@
   "private": true,
   "description": "Canonical reference for Grok Build /goal",
   "scripts": {
-    "test": "npm test --prefix tools/goal-audit && npm test --prefix tools/goal-init && npm test --prefix tools/goal-cost",
+    "test": "npm test --prefix tools/goal-audit && npm test --prefix tools/goal-init && npm test --prefix tools/goal-cost && npm test --prefix tools/goal",
     "validate": "node scripts/validate-registry.mjs",
-    "build": "npm run build --prefix tools/goal-audit && npm run build --prefix tools/goal-init && npm run build --prefix tools/goal-cost"
+    "build": "npm run build --prefix tools/goal-audit && npm run build --prefix tools/goal-init && npm run build --prefix tools/goal-cost && npm run build --prefix tools/goal"
   },
   "license": "MIT"
 }

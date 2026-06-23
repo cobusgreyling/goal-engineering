@@ -67,7 +67,7 @@ async function findSkills(root: string): Promise<{ names: string[]; grokNative: 
       if (e.isDirectory()) found.add(e.name);
     }
   }
-  return { names: [...found], grokNative };
+  return { names: [...found].sort(), grokNative };
 }
 
 async function goalHasDoneConditions(root: string, goalPaths: string[]): Promise<boolean> {
@@ -82,12 +82,19 @@ async function goalHasDoneConditions(root: string, goalPaths: string[]): Promise
   return false;
 }
 
+const RUN_LOG_MAX_AGE_DAYS = 90;
+
 async function runLogRecentlyUpdated(root: string): Promise<boolean> {
   for (const f of RUN_LOG_FILES) {
+    const full = path.join(root, f);
     try {
-      const content = await readFile(path.join(root, f), 'utf8');
+      const [content, st] = await Promise.all([readFile(full, 'utf8'), stat(full)]);
+      const ageDays = (Date.now() - st.mtimeMs) / (1000 * 60 * 60 * 24);
+      if (ageDays > RUN_LOG_MAX_AGE_DAYS) continue;
       const currentYear = new Date().getFullYear();
-      if (new RegExp(String(currentYear)).test(content)) return true;
+      const hasYear = new RegExp(String(currentYear)).test(content);
+      const hasOutcome = /\|\s*(completed|blocked|in progress)\s*\|/i.test(content);
+      if (hasYear && hasOutcome) return true;
     } catch {
       /* skip */
     }
@@ -299,6 +306,14 @@ export async function auditProject(target: string): Promise<AuditResult> {
       message: 'Score capped at G2 — add test harness for G3 (objective gates need npm test / pytest)',
     });
     recommendations.push('Document test command in AGENTS.md and package.json scripts.test');
+  }
+  if (score >= 80 && runLog && !runLogRecent) {
+    score = 79;
+    findings.push({
+      level: 'warn',
+      message: 'Score capped at G2 — goal-run-log.md needs a recent outcome entry for G3',
+    });
+    recommendations.push('Log the latest goal run in goal-run-log.md (date, outcome, turns)');
   }
   const level = scoreLevel(score);
 

@@ -1,0 +1,29 @@
+# GOAL.md
+
+## Status
+ACTIVE
+
+## Active Objective
+
+Raise test coverage on `src/auth/` to ≥ 80%.
+
+## Done Condition
+
+- [ ] Coverage ≥ 80% on `src/auth/` (per coverage report)
+- [ ] No hollow tests (trivial asserts only)
+- [ ] Full suite still green
+- [ ] goal-verifier PASS
+
+## Coverage Target
+
+| Path | Target |
+|------|--------|
+| `src/auth/` | ≥ 80% lines |
+
+## Deny List
+
+- `@ts-ignore`, skipping tests, deleting assertions
+
+## Progress Log
+
+## Blockers

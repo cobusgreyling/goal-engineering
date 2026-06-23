@@ -21,6 +21,30 @@ function runCli(args, cwd) {
   });
 }
 
+test('goal-init scaffolds migrate-module with pattern verifier', async () => {
+  const tmp = await mkdtemp(path.join(os.tmpdir(), 'goal-init-migrate-'));
+  try {
+    const { code, stdout } = await runCli(['--pattern', 'migrate-module', '--tool', 'grok', tmp], tmp);
+    assert.equal(code, 0, stdout);
+    const skill = await readFile(path.join(tmp, '.grok', 'skills', 'goal-verifier', 'SKILL.md'), 'utf8');
+    assert.match(skill, /import scan|legacy/i);
+  } finally {
+    await rm(tmp, { recursive: true, force: true });
+  }
+});
+
+test('goal-init --lang python writes pytest AGENTS.md', async () => {
+  const tmp = await mkdtemp(path.join(os.tmpdir(), 'goal-init-py-'));
+  try {
+    const { code } = await runCli(['--pattern', 'minimal-goal', '--lang', 'python', tmp], tmp);
+    assert.equal(code, 0);
+    const agents = await readFile(path.join(tmp, 'AGENTS.md'), 'utf8');
+    assert.match(agents, /pytest/);
+  } finally {
+    await rm(tmp, { recursive: true, force: true });
+  }
+});
+
 test('goal-init scaffolds tests-green pattern', async () => {
   const tmp = await mkdtemp(path.join(os.tmpdir(), 'goal-init-'));
   try {
