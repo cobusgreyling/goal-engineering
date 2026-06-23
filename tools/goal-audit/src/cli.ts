@@ -8,12 +8,12 @@ type GoalLevel = keyof typeof LEVEL_ORDER;
 function parseMinLevel(argv: string[]): GoalLevel | null {
   const idx = argv.findIndex((a) => a === '--min-level');
   if (idx === -1) return null;
-  const raw = argv[idx + 1]?.toUpperCase() as GoalLevel | undefined;
+  const raw = argv[idx + 1]?.toUpperCase();
   if (!raw || !(raw in LEVEL_ORDER)) {
     console.error('goal-audit: --min-level requires G0, G1, G2, or G3');
     process.exit(1);
   }
-  return raw;
+  return raw as GoalLevel;
 }
 
 const args = process.argv.slice(2);

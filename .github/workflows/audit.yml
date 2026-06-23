@@ -14,10 +14,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Install CLI dependencies
+        run: |
+          npm ci --prefix tools/goal-audit
+          npm ci --prefix tools/goal-init
+          npm ci --prefix tools/goal-cost
+          npm run build --prefix tools/goal-audit
+          npm run build --prefix tools/goal-init
+          npm run build --prefix tools/goal-cost
+          npm install --prefix tools/goal file:tools/goal-audit file:tools/goal-init file:tools/goal-cost
       - name: Install and test all CLIs
         run: npm test
       - name: Validate registry
         run: npm install yaml --no-save && npm run validate
       - name: Audit reference repo (dogfood)
         working-directory: tools/goal-audit
-        run: node dist/cli.js ../.. --md
+        run: |
+          npm run build
+          node dist/cli.js ../.. --md --min-level G2

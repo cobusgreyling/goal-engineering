@@ -11,7 +11,9 @@
 
 ## One-time setup
 
-1. GitHub Actions secret `NPM_TOKEN` on this repo (publish scope).
+1. GitHub Actions secret `NPM_TOKEN` on this repo (Automation publish token from npmjs.com).
+   Release workflows fail with `ENEEDAUTH` until this secret is set.
+   Local publish requires `npm login` + 2FA OTP: `npm publish --otp=XXXX`
 2. Optional **Trusted Publisher** on npm for each package → `cobusgreyling/goal-engineering` + matching `release-*.yml` workflow.
 3. GitHub Pages — see [GITHUB_PAGES.md](./GITHUB_PAGES.md).
 
