@@ -1,0 +1,21 @@
+title: Goal Engineering
+description: Canonical reference for Grok Build CLI /goal — run-until-done objectives
+theme: jekyll-theme-minimal
+baseurl: "/goal-engineering"
+url: "https://cobusgreyling.github.io"
+
+plugins:
+  - jekyll-relative-links
+
+relative_links:
+  enabled: true
+  collections: true
+
+include:
+  - CONTRIBUTING.md
+
+exclude:
+  - node_modules
+  - tools/goal-audit/node_modules
+  - tools/goal-audit/dist
+  - .gitignore

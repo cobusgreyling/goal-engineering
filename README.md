@@ -11,6 +11,7 @@
   <a href="https://github.com/cobusgreyling/goal-engineering/actions/workflows/audit.yml"><img src="https://img.shields.io/github/actions/workflow/status/cobusgreyling/goal-engineering/audit.yml?label=goal-audit%20dogfood" alt="goal-audit dogfood"></a>
   <a href="https://www.npmjs.com/package/@cobusgreyling/goal-audit"><img src="https://img.shields.io/npm/v/@cobusgreyling/goal-audit?label=goal-audit" alt="goal-audit npm"></a>
   <a href="https://github.com/cobusgreyling/goal-engineering/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT"></a>
+  <a href="https://cobusgreyling.github.io/goal-engineering/"><img src="https://img.shields.io/badge/GitHub_Pages-live%20%7C%20interactive-f59e0b" alt="Pages"></a>
 </p>
 
 **Goal engineering is replacing one-shot prompts with verifiable, run-until-done objectives.** You define what "done" means, Grok Build works across turns until the condition holds — and reports progress via `/goal` and `update_goal`.

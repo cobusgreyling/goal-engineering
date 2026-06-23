@@ -1,0 +1,336 @@
+---
+layout: null
+title: Goal Engineering — Showcase
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goal Engineering — Run until done with Grok Build</title>
+  <meta name="description" content="The canonical reference for Grok Build CLI /goal. Patterns, verifier skills, goal-audit CLI, and interactive picker.">
+  <meta property="og:title" content="Goal Engineering">
+  <meta property="og:description" content="Stop one-shot prompts. Start verifiable run-until-done goals.">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/showcase.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="logo">Goal <span>Engineering</span></a>
+    <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div id="nav-menu" class="nav-menu">
+      <ul class="nav-links">
+        <li><a href="#api">API</a></li>
+        <li><a href="#patterns">Patterns</a></li>
+        <li><a href="#primitives">Primitives</a></li>
+        <li><a href="#interactive">Picker</a></li>
+        <li><a href="#start">Get Started</a></li>
+        <li><a href="https://github.com/cobusgreyling/loop-engineering">Loops</a></li>
+        <li><a href="https://github.com/cobusgreyling/goal-engineering">GitHub</a></li>
+      </ul>
+      <a href="https://github.com/cobusgreyling/goal-engineering" class="btn btn-primary">View Repo</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="badge">Grok Build /goal · update_goal · G0→G3 · 6 patterns · goal-audit CLI</div>
+  <h1>Run until<br>verifiably done</h1>
+  <p class="lead">
+    Goal engineering replaces one-shot prompts with persistent objectives.
+    Grok Build works across turns until the condition holds — and reports progress without flooding your chat.
+  </p>
+  <div class="hero-cta">
+    <a href="https://github.com/cobusgreyling/goal-engineering/tree/main/starters/minimal-goal" class="btn btn-primary">Clone Starter →</a>
+    <a href="https://github.com/cobusgreyling/goal-engineering/blob/main/docs/api-reference.md" class="btn btn-ghost">API Reference</a>
+    <a href="https://github.com/cobusgreyling/loop-engineering" class="btn btn-ghost">Loop Engineering</a>
+  </div>
+  <p style="text-align:center; margin-top:-12px; margin-bottom:32px; font-size:0.9rem; color:var(--text-muted);">
+    Try: <code style="background:#050810;padding:2px 6px;border-radius:4px;">npx @cobusgreyling/goal-audit . --suggest</code>
+    <button onclick="copyNpxAudit()" class="copy-btn" style="vertical-align:middle;">Copy</button>
+    &nbsp;&nbsp;
+    <code style="background:#050810;padding:2px 6px;border-radius:4px;">/goal All tests pass — goal-verifier before done</code>
+  </p>
+</header>
+
+<div class="wrap quotes">
+  <div class="quote-card">
+    <blockquote>"A goal is a bounded objective with a verifiable completion condition — not an open-ended chat, not a cron job."</blockquote>
+    <cite>— Goal Engineering</cite>
+  </div>
+  <div class="quote-card">
+    <blockquote>"Loops discover work. Goals finish it."</blockquote>
+    <cite>— <a href="https://github.com/cobusgreyling/loop-engineering">Loop Engineering</a> companion</cite>
+  </div>
+  <div class="quote-card">
+    <blockquote>"The implementer must never grade its own homework."</blockquote>
+    <cite>— Maker / checker split</cite>
+  </div>
+</div>
+
+<section id="api" class="wrap">
+  <p class="section-label">Grok Build CLI</p>
+  <h2 class="section-title">The /goal API</h2>
+  <p class="section-desc">Slash command for humans. <code>update_goal</code> tool for the agent.</p>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span>grok build — goal mode</span>
+    </div>
+    <pre><span class="cmd">/goal</span> Migrate auth to v2. Done when tests pass and no legacy imports.
+<span class="cmd">/goal</span> status
+<span class="cmd">/goal</span> pause
+<span class="cmd">/goal</span> resume
+<span class="cmd">/goal</span> clear
+
+<span class="comment"># Agent telemetry (not chat spam)</span>
+update_goal(message: "12/18 auth tests passing")
+update_goal(completed: true, message: "Verifier PASS — migration done")
+update_goal(blocked_reason: "Need sandbox OAuth credentials")</pre>
+  </div>
+  <p style="margin-top: 20px; text-align: center;">
+    <a href="https://github.com/cobusgreyling/goal-engineering/blob/main/docs/api-reference.md">Full API reference →</a>
+    ·
+    <a href="https://github.com/cobusgreyling/goal-engineering/blob/main/docs/goal-vs-loop.md">Goal vs Loop →</a>
+  </p>
+</section>
+
+<section id="flow" class="wrap">
+  <p class="section-label">Anatomy</p>
+  <h2 class="section-title">What one goal looks like</h2>
+  <p class="section-desc">Set the objective once. Grok persists until done, blocked, or cleared.</p>
+  <div class="flow">
+    <span class="flow-step">🎯 /goal</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">📋 GOAL.md</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">⚙️ Implementer</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">✓ Verifier</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">📡 update_goal</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">✅ Done</span>
+  </div>
+</section>
+
+<section id="primitives" class="wrap">
+  <p class="section-label">Building blocks</p>
+  <h2 class="section-title">Four primitives</h2>
+  <p class="section-desc">Every reliable goal run needs these four capabilities.</p>
+  <div class="primitives">
+    <div class="primitive">
+      <div class="icon">🎯</div>
+      <h3>Objective</h3>
+      <p>One sentence + done condition</p>
+    </div>
+    <div class="primitive">
+      <div class="icon">✓</div>
+      <h3>Verifier</h3>
+      <p>Independent completion check</p>
+    </div>
+    <div class="primitive">
+      <div class="icon">📋</div>
+      <h3>State</h3>
+      <p>GOAL.md survives compaction</p>
+    </div>
+    <div class="primitive">
+      <div class="icon">🛡</div>
+      <h3>Budget</h3>
+      <p>Turn caps + kill switches</p>
+    </div>
+  </div>
+  <div class="tools" style="margin-top: 40px;">
+    <span class="tool-pill grok">Grok Build /goal</span>
+    <span class="tool-pill claude">Claude /goal</span>
+    <span class="tool-pill codex">Codex /goal</span>
+  </div>
+</section>
+
+<section id="patterns" class="wrap">
+  <p class="section-label">Copy & run</p>
+  <h2 class="section-title">Production patterns</h2>
+  <p class="section-desc">Each pattern includes an example /goal line, verifier strategy, and GOAL.md fields.</p>
+  <div class="patterns">
+    <article class="pattern-card">
+      <span class="tag">Start here</span>
+      <h3>Tests Green</h3>
+      <p>CI red → green with verifier gates. The most common first goal.</p>
+      <a class="link" href="https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/tests-green.md">Read pattern →</a>
+    </article>
+    <article class="pattern-card">
+      <span class="tag">Migration</span>
+      <h3>Migrate Module</h3>
+      <p>API migration with import scan + test lock.</p>
+      <a class="link" href="https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/migrate-module.md">Read pattern →</a>
+    </article>
+    <article class="pattern-card">
+      <h3>Implement Feature</h3>
+      <p>Scoped feature with acceptance criteria checklist.</p>
+      <a class="link" href="https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/implement-feature.md">Read pattern →</a>
+    </article>
+    <article class="pattern-card">
+      <h3>Fix Bug</h3>
+      <p>Repro → fix → regression test. Handoff from loop triage.</p>
+      <a class="link" href="https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/fix-bug.md">Read pattern →</a>
+    </article>
+    <article class="pattern-card">
+      <h3>Refactor Safely</h3>
+      <p>Behavior-preserving refactor with full test lock.</p>
+      <a class="link" href="https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/refactor-safely.md">Read pattern →</a>
+    </article>
+    <article class="pattern-card">
+      <h3>Coverage Target</h3>
+      <p>Raise coverage to threshold on scoped paths.</p>
+      <a class="link" href="https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/coverage-target.md">Read pattern →</a>
+    </article>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="num">6</div><div class="label">Patterns</div></div>
+    <div class="stat"><div class="num">G0→G3</div><div class="label">Readiness</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">Skills</div></div>
+    <div class="stat"><div class="num">100</div><div class="label">Audit max</div></div>
+  </div>
+</section>
+
+<section id="start" class="wrap">
+  <p class="section-label">2 minutes</p>
+  <h2 class="section-title">Get started</h2>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span>terminal — minimal goal</span>
+    </div>
+    <pre>git clone https://github.com/cobusgreyling/goal-engineering.git
+cd your-project
+cp -r goal-engineering/starters/minimal-goal/.grok/skills/goal-verifier .grok/skills/
+cp goal-engineering/starters/minimal-goal/GOAL.md.example GOAL.md
+
+npx @cobusgreyling/goal-audit . --suggest
+
+<span class="comment"># In Grok Build</span>
+<span class="cmd">/goal</span> Read GOAL.md. Work the objective. goal-verifier before completed: true.</pre>
+  </div>
+</section>
+
+<section id="interactive" class="wrap" style="padding-top: 12px;">
+  <p class="section-label">Play with it</p>
+  <h2 class="section-title">Pattern Picker &amp; Readiness Simulator</h2>
+  <div class="interactive">
+    <h3 style="font-size:1rem; margin-bottom:8px;">What are you trying to finish?</h3>
+    <div class="symptom-pills" id="symptom-pills">
+      <div class="symptom-pill" data-symptom="ci">CI / tests red</div>
+      <div class="symptom-pill" data-symptom="migrate">Module / API migration</div>
+      <div class="symptom-pill" data-symptom="feature">Ship a scoped feature</div>
+      <div class="symptom-pill" data-symptom="bug">Fix a specific bug</div>
+      <div class="symptom-pill" data-symptom="refactor">Safe refactor</div>
+      <div class="symptom-pill" data-symptom="coverage">Raise test coverage</div>
+    </div>
+    <div id="reco-output" class="reco-card" style="display:none;">
+      <strong>Recommended:</strong> <span id="reco-name"></span><br>
+      <span style="font-size:0.8rem;">/goal:</span> <code id="reco-goal" style="font-family:var(--font-mono);font-size:0.85rem;"></code>
+      <button onclick="copyRecoGoal()" class="copy-btn">Copy</button><br>
+      <a id="reco-link" class="link" href="#" target="_blank" rel="noopener">Read full pattern →</a>
+    </div>
+  </div>
+  <div class="interactive" style="margin-top:24px;">
+    <h3 style="font-size:1rem; margin-bottom:8px;">Goal Readiness Simulator (mirrors goal-audit)</h3>
+    <div class="check-grid" id="sim-checks">
+      <label class="check-item"><input type="checkbox" data-pts="15"> GOAL.md present</label>
+      <label class="check-item"><input type="checkbox" data-pts="20"> goal-verifier skill</label>
+      <label class="check-item"><input type="checkbox" data-pts="10"> AGENTS.md mentions goals</label>
+      <label class="check-item"><input type="checkbox" data-pts="15"> Test harness</label>
+      <label class="check-item"><input type="checkbox" data-pts="10"> goal-budget.md</label>
+      <label class="check-item"><input type="checkbox" data-pts="10"> CI workflows</label>
+      <label class="check-item"><input type="checkbox" data-pts="5"> goal-scoper skill</label>
+      <label class="check-item"><input type="checkbox" data-pts="5"> goal-run-log.md</label>
+      <label class="check-item"><input type="checkbox" data-pts="5"> Safety docs</label>
+      <label class="check-item"><input type="checkbox" data-pts="5"> Patterns documented</label>
+    </div>
+    <div class="live-score">
+      <div>
+        <div class="big" id="live-score">0</div>
+        <div style="font-size:0.7rem; color:var(--text-muted);">/ 100</div>
+      </div>
+      <div class="meta">
+        <div><strong id="live-level">G0</strong> — <span id="live-assessment">Ad hoc — add GOAL.md + verifier</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta">
+  <h2>The go-to for Grok Build /goal</h2>
+  <p>Link here when you teach, blog, or ship goal-driven agent workflows.</p>
+  <div class="cta-actions">
+    <a href="https://github.com/cobusgreyling/goal-engineering" class="btn btn-primary">Star on GitHub</a>
+    <a href="https://github.com/cobusgreyling/goal-engineering/blob/main/CONTRIBUTING.md" class="btn btn-ghost">Contribute</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>
+    <a href="https://github.com/cobusgreyling/goal-engineering">GitHub</a>
+    ·
+    <a href="https://github.com/cobusgreyling/loop-engineering">Loop Engineering</a>
+    ·
+    <a href="https://github.com/cobusgreyling/fleet-engineering">Fleet Engineering</a>
+    · MIT · <a href="https://github.com/cobusgreyling">Cobus Greyling</a>
+  </p>
+</footer>
+
+<script>
+function copyText(txt, el) {
+  navigator.clipboard.writeText(txt);
+  if (el) { const o = el.textContent; el.textContent = 'Copied!'; setTimeout(() => el.textContent = o, 1400); }
+}
+function copyNpxAudit() { copyText('npx @cobusgreyling/goal-audit . --suggest', event.target); }
+
+const PATTERNS = {
+  ci: { name: 'Tests Green', goal: '/goal Fix all failing tests. Done when full suite passes and goal-verifier PASS.', href: 'https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/tests-green.md' },
+  migrate: { name: 'Migrate Module', goal: '/goal Migrate per GOAL.md. Done when tests pass, zero legacy imports, goal-verifier PASS.', href: 'https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/migrate-module.md' },
+  feature: { name: 'Implement Feature', goal: '/goal Implement feature in GOAL.md. Done when acceptance criteria checked and goal-verifier PASS.', href: 'https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/implement-feature.md' },
+  bug: { name: 'Fix Bug', goal: '/goal Fix bug per GOAL.md repro. Done when regression test added and goal-verifier PASS.', href: 'https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/fix-bug.md' },
+  refactor: { name: 'Refactor Safely', goal: '/goal Refactor per GOAL.md. Done when all tests pass unchanged and goal-verifier PASS.', href: 'https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/refactor-safely.md' },
+  coverage: { name: 'Coverage Target', goal: '/goal Raise coverage on scoped paths to target in GOAL.md. goal-verifier PASS.', href: 'https://github.com/cobusgreyling/goal-engineering/blob/main/patterns/coverage-target.md' }
+};
+
+document.querySelectorAll('.symptom-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.symptom-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    const p = PATTERNS[pill.dataset.symptom];
+    document.getElementById('reco-output').style.display = 'block';
+    document.getElementById('reco-name').textContent = p.name;
+    document.getElementById('reco-goal').textContent = p.goal;
+    document.getElementById('reco-link').href = p.href;
+  });
+});
+function copyRecoGoal() { copyText(document.getElementById('reco-goal').textContent, event.target); }
+
+function updateScore() {
+  let score = 0;
+  document.querySelectorAll('#sim-checks input:checked').forEach(cb => { score += parseInt(cb.dataset.pts, 10); });
+  score = Math.min(100, score);
+  document.getElementById('live-score').textContent = score;
+  const level = score >= 80 ? 'G3' : score >= 60 ? 'G2' : score >= 40 ? 'G1' : 'G0';
+  const assess = { G0: 'Ad hoc', G1: 'Assisted goals', G2: 'Verified goals', G3: 'Production-ready' };
+  document.getElementById('live-level').textContent = level;
+  document.getElementById('live-assessment').textContent = assess[level];
+}
+document.querySelectorAll('#sim-checks input').forEach(cb => cb.addEventListener('change', updateScore));
+
+document.querySelector('.nav-toggle')?.addEventListener('click', function() {
+  const open = this.getAttribute('aria-expanded') === 'true';
+  this.setAttribute('aria-expanded', String(!open));
+  document.getElementById('nav-menu').classList.toggle('open', !open);
+});
+</script>
+</body>
+</html>
