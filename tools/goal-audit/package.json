@@ -1,6 +1,6 @@
 {
   "name": "@cobusgreyling/goal-audit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Goal engineering readiness auditor for Grok Build /goal. Compute Goal Readiness Score (G0-G3). npx @cobusgreyling/goal-audit . --suggest",
   "type": "module",
   "bin": {
