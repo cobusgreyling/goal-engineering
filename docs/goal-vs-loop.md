@@ -25,7 +25,15 @@ Do you know what "done" looks like?
 
 ## Combined Pattern (Recommended)
 
-Production setups often use **both**:
+Production setups often use **both**. [Loop Engineering v1.5.0](https://github.com/cobusgreyling/loop-engineering/releases/tag/v1.5.0) ships the discovery layer (`loop-sync`, `loop-constraints`, MCP server); this repo ships the finish layer (`/goal`, `goal-verifier`). Full day rhythm: [stack-cookbook.md](stack-cookbook.md).
+
+```bash
+# Morning: loop triage (loop-engineering)
+npx @cobusgreyling/loop-init . --pattern daily-triage --tool grok
+
+# Afternoon: finish top item (goal-engineering)
+npx @cobusgreyling/goal init . --pattern fix-bug --tool grok
+```
 
 1. **Loop** runs daily triage → writes priorities to `STATE.md`
 2. Human or loop picks top item → **`/goal`** for run-until-done execution
