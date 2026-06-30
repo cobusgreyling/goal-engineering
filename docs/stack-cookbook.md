@@ -1,6 +1,6 @@
 # Stack Cookbook — Loop → Goal → Fleet
 
-One narrative for combining [loop-engineering](https://github.com/cobusgreyling/loop-engineering), **goal-engineering**, and [fleet-engineering](https://github.com/cobusgreyling/fleet-engineering).
+One narrative for combining [loop-engineering](https://github.com/cobusgreyling/loop-engineering) ([v1.5.0](https://github.com/cobusgreyling/loop-engineering/releases/tag/v1.5.0) — `loop-sync`, `loop-constraints`, MCP server), **goal-engineering**, and [fleet-engineering](https://github.com/cobusgreyling/fleet-engineering).
 
 ## Daily rhythm
 
