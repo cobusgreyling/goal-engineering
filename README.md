@@ -36,6 +36,13 @@ This is the **canonical public reference** for [Grok Build CLI](https://x.ai)'s 
   <strong><a href="https://github.com/cobusgreyling/fleet-engineering">Fleet Engineering</a></strong> (governed populations)
 </p>
 
+<p align="center">
+  <strong>🔄 <a href="https://github.com/cobusgreyling/loop-engineering/releases/tag/v1.5.0">Loop Engineering v1.5.0</a> just shipped</strong> — <code>loop-sync</code>, <code>loop-constraints</code>, MCP server on npm.
+  <br>
+  <em>Loops discover work on a cadence. Goals finish bounded tasks.</em>
+  <a href="docs/stack-cookbook.md">Stack cookbook →</a>
+</p>
+
 ## The One-Line Definition
 
 A **goal** is a single autonomous objective with a verifiable completion condition. Unlike a loop (which fires on a schedule), a goal **persists across turns** until Grok marks it complete, blocked, or you pause it.
@@ -99,6 +106,18 @@ Most agent work fails in the gap between "looks done" and **actually done**. Goa
 4. **Verifiable completion** — you define the stop condition up front
 
 Goals pair naturally with [loop engineering](https://github.com/cobusgreyling/loop-engineering): loops discover work; goals **finish** it. See [docs/stack-cookbook.md](docs/stack-cookbook.md).
+
+**Try the stack:** morning loop triage → pick top item → `/goal` until verifier passes:
+
+```bash
+# Loop side (v1.5.0 — just released)
+npx @cobusgreyling/loop-init . --pattern daily-triage --tool grok
+npx @cobusgreyling/loop-audit . --suggest
+
+# Goal side (this repo)
+npx @cobusgreyling/goal init . --pattern fix-bug --tool grok
+npx @cobusgreyling/goal doctor . --suggest
+```
 
 ## Grok Build API
 
